@@ -1,0 +1,244 @@
+CUANDO SE INSTALA GIT PRIMERO REALIZO ESTO:
+1)git config --global user.name "Gustavo"
+2)git config --global user.email "email@gmail.com"
+3)Para saber que datos tengo en los registros anteriores: git config --global -e
+
+----------------------------------------------------------------------------------------------
+NOTA: Para salir siempre ver si estan los dos puntos, apretar q y luego enter
+----------------------------------------------------------------------------------------------
+
+Con: ls -al  puedo ver todos los archivos y carpetas de un repo
+
+Con: git init  creo el repositorio local // Primero entro en la carpeta del proyecto y luego ejecuto el comando
+
+Con: git status  puedo ver en rojo todos los archivos o carpetas pero no han sido registradas en ningun lugar
+Con: git status -s  puedo ver todo de una manera mas simplificada
+Con: git status -s -b   me muestra la info de en que rama estamos trabajando
+
+Con: git add .   estoy agregando todos los archivos para que git este pendiente de los cambios
+Por ejemplo para añadir todos los archivos que terminan con png: git add *.png
+Por ejemplo para añadir todos los archivos que se encuentren dentro de una carpeta: git add css/
+Suponiendo que quiero todos los archivos menos alguno en particular: git add -A   te selecciona todos los archivos
+luego escribo: git reset *.xml (para sacar un archivo xml ejemplo)
+DIFERENTES FORMAS:
+1)git add "*.txt"  Agrega todos los txt de TODO el proyecto
+2)git add *.txt   Agrega todos los txt en el directorio actual
+3)git add --all   Similar al git add .
+4)git add <lista de archivos>  Ej: git add <index.html archivo.xml css/>
+5)git add pdfs/*.pdf  Agrega todos los archivo pdf que se encuentren dentro de la carpeta pdfs
+
+Hago un git status y puede ver que ya se puso todo en verde, esta listo para un commit
+
+Con: git commit  es como decirle a git quiero que tomes una fotografia de como se encuentra proyecto en este momento
+pero va a pedir un mensaje entonces podemos poner: git commit -m "Primer commit"
+
+Si vuelvo a poner git status puedo ver que el estado es On branch master
+
+Suponiendo que estoy trabajando en el codigo, hice un cambio y guarde y me doy cuento que esta mal y quiero volver a
+como lo tenia antes (a cuando hice commit), en la consola de gitbash escribo: git checkout -- .    Osea va a reconstruir
+todo a como estaba en el ultimo commit
+
+----------------------------------------------------------------------------------------------
+
+COMANDOS USADOS EN ORDEN:
+1) git init
+2) git add index.html  Para mandar un archivo al stage o escenario
+3) git commit    Una vez que mando un archivo al stage puedo hacer un commit, con esto se crea un registro historico
+
+Con: git log   puedo ver la info de todos los commit
+Con: git log --oneline   veo la info de todos los commit con un hash corto
+Con: git log --oneline --decorate --all (nos va a mostrar toda la informacion referente a las diferentes ramas y otras cosas) --graph
+
+----------------------------------------------------------------------------------------------
+
+CREANDO ALIAS: Para verlos todos puedo poner: git config --global -e   ó  git config --global -l
+1)git config --global alias.lg "log --oneline --decorate --all --graph"
+lg es como quiero llamar el alias y lo que va en "" es la sentencia. Entonces ya puedo escribir: git lg
+2)git config --global alias.s "status -s -b" (s de silent y b de branch)
+
+----------------------------------------------------------------------------------------------
+
+Con: git diff   nos va a decir los cambios que hubo en los archivos
+Con: git diff --staged   para ver las modificaciones de los archivos que estan en el stage
+
+Con: git reset HEAD README.md     elimino un archivo del stage. HEAD apunta al ultimo commit que hicimos
+
+Con: git checkout -- README.md    revierte cambios solo en ese archivo
+
+----------------------------------------------------------------------------------------------
+
+PARA SUBIR AL STAGE Y COMMIT AL MISMO TIEMPO:
+1)git commit -am "Readme actualizado"
+
+ARREGLAR UN MENSAJE DEL COMMIT (en caso que me equivoque o actualize el mensaje):
+1)git commit --amend -m "Actualizamos el readme"
+
+----------------------------------------------------------------------------------------------
+
+EN CASO QUE ME HAYA OLVIDADO DE HACER ALGUNA MODIFICACION A UN ARCHIVO Y NO QUIERA HACER UN NUEVO COMMIT:
+1)git reset --soft HEAD^
+Si quiero apuntar al commit que esta antes del HEAD pongo HEAD^
+Hay 3 tipos de reset: el suave, el normal y uno fuerte que ese ya elimina inclusive los cambios
+Tambien en lugar del HEAD puedo poner el hash: git reset --soft 345d7de   para acceder a un commit determinado
+2)git reset --mixed
+Mixed es por defecto, es como poner: git reset
+Ponele que hice un determinado numero de commits: a, b, c, d, e  y quiero volver al punto c porque me equivoque con
+el d y e. Uso git reset --mixed c  y eso lo que hace es ponerme en el stage d y e   y luego uso git reset --hard c
+que es el punto de la historia
+3)git reset --hard (codigo hash a donde me quiero mover)
+Te borra todos los commits y cambios que le siguen al punto de se quiere mover
+
+Si borre cosas con git reset y por algun motivo quiero volver a tenerlas puedo usar:
+git reflog  (para ver todas las modificaciones que hicimos con git) y elegir el punto a donde quiero volver
+Poner: git reset --hard 99b0ed9(punto a donde quiero volver)
+
+NOTA: cuando entras en la pantalla por ejemplo cuando escribis solamente: git commit, tocas a para escribir
+una vez que finalicé toco ESC y luego de los dos puntos: W (de escribir) y q, quedaria wq
+
+----------------------------------------------------------------------------------------------
+
+CAMBIAR NOMBRE DE UN ARCHIVO CON GIT:
+git mv destruir-mundo.txt salvar-mundo.txt    (primero va el archivo que quiero renombrar o mover y luego va como
+lo quiero nombrar)
+
+CAMBIAR NOMBRE DE ARCHIVO CON EDITOR:
+Hago los cambios en el editor y luego en git escribo:
+1)git add -u   (u de actualizar)
+2)git s
+3)git add -A
+4)git s
+
+ELIMINAR UN ARCHIVO CON GIT:
+git rm salvar-mundo.txt
+
+ELIMINAR UN ARCHIVO CON EDITOR:
+Borro un archivo con el editor y luego en git:
+1)git s
+2)git add -u  (para actualizar todo)
+3)Ya puedo hacer el commit
+
+----------------------------------------------------------------------------------------------
+
+PARA CREAR UNA NUEVA RAMA SIN MOVERME A LA MISMA:
+git branch rama-villanos(nombre de la rama)
+
+PARA CREAR UNA NUEVA RAMA MOVIENDOME A LA MISMA:
+git checkout -b rama-villanos(nombre de la rama)
+
+git branch  me dice cuales son las ramas
+
+Cambiar a una rama: git checkout rama-villanos
+
+PARA SABER DIFERENCIAS ENTRE UNA RAMA Y OTRA:
+git diff rama-villanos master
+
+PARA UNIR UNA RAMA:
+1)Me muevo a la rama master en este caso, con: git checkout master
+2)Estando en la rama master puedo hacer un: git merge rama-villanos
+3)Una vez que hicimos el merge hay que borrar la rama villanos porque ya no se usa mas
+Pongo: git branch -d rama-villanos
+
+----------------------------------------------------------------------------------------------
+
+CREANDO UN TAG:
+git tag superRelease(nombre del tag)
+Para ver todos los tag en el repo: git tag
+
+CREANDO UN TAG DE UNA MEJOR MANERA:
+Esto lo crearia en la ultimo commit: git tag -a v1.0.0 -m "Version 1.0.0"
+Para crear un tag en un commit determinado: git tag -a v0.1.0 345d7de(hash) -m "Version 0.1.0"
+
+BORRANDO UN TAG:
+git tag -d superRelease(nombre del tag)
+
+VER INFORMACION DEL TAG
+git show v1.0.0
+
+----------------------------------------------------------------------------------------------
+
+PONIENDO EL TRABAJO EN UN SEGUNDO PLANO CON STASH
+git stash ó git stash save
+Tambien se puede con mensaje: git stash save "Agregamos a fulano en los villanos"
+
+SABER TODOS LOS WIP (Work in progress) QUE HAY:
+git stash list
+
+SABER TODOS LOS WIP QUE HAY INCLUYENDO MODIFICACIONES:
+git stash list --stat
+
+SABER QUE MODIFICACIONES SE ESTABAN HACIENDO EN UN DETERMINADO STASH:
+Para el ultimo stash: git show stash
+De un determinado stash: git show stash@{1}
+
+RECUPERAR LOS CAMBIOS O EL TRABAJO QUE TENIAMOS EN EL STASH (DEL ULTIMO INGRESO AL STASH)
+git stash pop (restaura la ultima entrada del stash y la borra)
+git stash apply
+
+RECUPERAR LOS CAMBIOS DE UN STASH EN PARTICULAR:
+git stash apply stash@{1}
+
+BORRAR UN STASH (BORRA LA PRIMERA ENTRADA DE STASH)
+git stash drop
+
+BORRAR UN STASH EN PARTICULAR:
+git stash drop stash@{1}
+
+BORRA TODAS LAS ENTRADAS EN EL STASH:
+git stash clear
+
+KEEP INDEX: guarda todo menos los archivos en el stage
+git stash save --keep-index
+
+INCLUDE-UNTRACKED: incluye todos los archivos, junto a los que git no le da seguimiento
+git stash save --include-untracked
+
+-----------------------------------------------------------------------------------------
+
+PARA HACER UN REBASE (NOS SIRVE PARA ACTUALIZAR EL PUNTO DONDE CREAMOS LA RAMA, OBTENIENDO TODOS LOS CAMBIOS QUE HAYAN SUCEDIDO EN LA RAMA DE LA CUAL NOSOTROS NOS DESPRENDIMOS):
+1)Me posiciono en la rama secundaria, en este caso no en la master: git checkout rama-misiones-completadas
+2)Escribo: git rebase master
+3)Veo que es como que quedan unidas la rama master con rama-misiones-completadas
+4)git checkout master
+5)git merge rama-misiones-completadas
+6)git branch -d rama-misiones-completadas
+
+REBASE INTERACTIVO:
+git rebase -i HEAD~3 (3 es el numero de commits que yo quiero). En este caso estoy apuntando a head y quiero
+3 commits antes.
+Sirve para:
+1)Ordenar commits
+2)Corregir mensajes de los commits
+3)Unir commits
+4)Separar commits
+
+REBASE SQUASH (CUANDO TENGO 2 COMMITS IGUALES O QUE TRABAJARON SOBRE EL MISMO ARCHIVO Y QUIERO UNIRLOS)
+1)git rebase -i HEAD~4 (quiero los ultimos 4 commits)
+
+REBASE REWORD (PARA EDITAR O ACORTAR UN MENSAJE DE COMMIT)
+1)git rebase -i HEAD~1
+
+-------------------------------------------------------------------------------------------------------------------
+
+GITHUB (COMANDOS):
+git remote add origin https://github.com/grercoli/test-sublime.git
+git push -u origin master
+
+git remote
+git remote -v
+git pull
+git clone https://github.com/grercoli/udemy-heroes.git
+git clone https://github.com/grercoli/udemy-heroes.git demo-10(asigno un nombre)
+git fetch (Actualiza todos los cambios que se hayan hecho en el repo remoto)
+
+SUBIR TODOS LOS TAGS
+git push --tags
+
+SI POR EJEMPLO YO ESTOY TRABAJANDO CON MI TRABAJO Y HAGO CAMBIOS Y NECESITO SUBIRLOS, PERO DEL OTRO LADO UN USUARIO HIZO
+CAMBIOS EN EL REPO DE GITHUB, NO ME VA A DEJAR HACER UN PUSH SABIENDO QUE HAY CAMBIOS DEL OTRO LADO
+PARA ESO TENDRIA QUE HACER UN "GIT PULL" PRIMERO, PERO NO CONOZCO QUE SE ACTUALIZO DEL OTRO LADO
+ENTONCES PARA QUE NO SEA TAN DESTRUCTIVO CON MI TRABAJO ACTUAL TENDRIA QUE HACER UN "GIT FETCH" YA
+QUE NO HACE EL MERGE DE FORMA AUTOMATICA:
+1)Hago un git fetch
+2)Hago un git pull
+3)Hago un git push finalmente
+
