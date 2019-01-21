@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author deferrari.exequiel
  */
-public class frmreserva extends javax.swing.JFrame {
+public class frmreserva extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frmreserva
@@ -28,7 +28,7 @@ public class frmreserva extends javax.swing.JFrame {
     }
 
     private String accion = "guardar";
-    private static int idusuario;
+    public static int idusuario;
 
     void ocultar_columnas() {
         //HIDE COLUMN, I don't want to show the Ids
@@ -51,9 +51,10 @@ public class frmreserva extends javax.swing.JFrame {
 
     void inhabilitar() {
         txtidreserva.setVisible(false);
-        txtidhabitacion.setEnabled(false);
-        txtidcliente.setEnabled(false);
-        txtidtrabajador.setEnabled(false);
+        txtidhabitacion.setVisible(false);
+        txtidcliente.setVisible(false);
+        txtidtrabajador.setVisible(false);
+        
         txtnumero.setEnabled(false);
         txtcliente.setEnabled(false);
         txttrabajador.setEnabled(false);
@@ -81,9 +82,10 @@ public class frmreserva extends javax.swing.JFrame {
     void habilitar() {
 
         txtidreserva.setVisible(false);
-        txtidhabitacion.setEnabled(false);
-        txtidcliente.setEnabled(false);
-        txtidtrabajador.setEnabled(false);
+        txtidhabitacion.setVisible(false);
+        txtidcliente.setVisible(false);
+        txtidtrabajador.setVisible(false);
+        
         txtnumero.setEnabled(false);
         txtcliente.setEnabled(false);
         txttrabajador.setEnabled(false);
@@ -289,8 +291,18 @@ public class frmreserva extends javax.swing.JFrame {
         });
 
         btnbuscahabitacion.setText("...");
+        btnbuscahabitacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuscahabitacionActionPerformed(evt);
+            }
+        });
 
         btnbuscacliente.setText("...");
+        btnbuscacliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuscaclienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -746,6 +758,22 @@ public class frmreserva extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboestadoActionPerformed
 
+    private void btnbuscahabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscahabitacionActionPerformed
+        // TODO add your handling code here:
+        
+        frmvistahabitacion form = new frmvistahabitacion();
+        form.toFront(); //in front of any screen
+        form.setVisible(true);
+    }//GEN-LAST:event_btnbuscahabitacionActionPerformed
+
+    private void btnbuscaclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscaclienteActionPerformed
+        // TODO add your handling code here:
+        frmvistacliente form = new frmvistacliente();
+        
+        form.toFront();
+        form.setVisible(true);
+    }//GEN-LAST:event_btnbuscaclienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -812,13 +840,13 @@ public class frmreserva extends javax.swing.JFrame {
     private javax.swing.JLabel lbltotalregistros;
     private javax.swing.JTable tablalistado;
     private javax.swing.JTextField txtbuscar;
-    private javax.swing.JTextField txtcliente;
+    public static javax.swing.JTextField txtcliente;
     private javax.swing.JTextField txtcosto_alojamiento;
-    private javax.swing.JTextField txtidcliente;
-    private javax.swing.JTextField txtidhabitacion;
+    public static javax.swing.JTextField txtidcliente;
+    public static javax.swing.JTextField txtidhabitacion;
     private javax.swing.JTextField txtidreserva;
-    private javax.swing.JTextField txtidtrabajador;
-    private javax.swing.JTextField txtnumero;
-    private javax.swing.JTextField txttrabajador;
+    public static javax.swing.JTextField txtidtrabajador;
+    public static javax.swing.JTextField txtnumero;
+    public static javax.swing.JTextField txttrabajador;
     // End of variables declaration//GEN-END:variables
 }

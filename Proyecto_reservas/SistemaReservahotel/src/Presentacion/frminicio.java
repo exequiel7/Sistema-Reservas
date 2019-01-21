@@ -123,6 +123,11 @@ public class frminicio extends javax.swing.JFrame {
         contentMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/reservas-consumos.png"))); // NOI18N
         contentMenuItem.setMnemonic('c');
         contentMenuItem.setText("Reservas y Consumos");
+        contentMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contentMenuItemActionPerformed(evt);
+            }
+        });
         mnureservas.add(contentMenuItem);
 
         aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
@@ -262,6 +267,20 @@ public class frminicio extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_mnusalirMouseClicked
+
+    private void contentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentMenuItemActionPerformed
+        // TODO add your handling code here:
+        
+        //When I click appear "Reservas" form
+        frmreserva form = new frmreserva();
+        escritorio.add(form); 
+        form.toFront();
+        form.setVisible(true);
+        
+        frmreserva.txtidtrabajador.setText(lblidpersona.getText());
+        frmreserva.txttrabajador.setText(lblnombre.getText() + " " + lblapaterno.getText());//Send the name and Apaterno
+        frmreserva.idusuario = Integer.parseInt(lblidpersona.getText());
+    }//GEN-LAST:event_contentMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
