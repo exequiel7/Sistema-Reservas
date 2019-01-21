@@ -33,15 +33,15 @@ public class freserva {
         totalregistros = 0;
         modelo = new DefaultTableModel(null, titulos);
         
-        sSQL = "SELECT r.idreserva, r.idhabitacion, h.numero, r.idcliente "
+        sSQL = "SELECT r.idreserva, r.idhabitacion, h.numero, r.idcliente, "
                 + "(SELECT nombre FROM persona WHERE idpersona = r.idcliente) AS clienten, "
                 + "(SELECT apaterno FROM persona WHERE idpersona = r.idcliente) AS clienteap, "
                 + "(SELECT nombre FROM persona WHERE idpersona = r.idcliente), "
                 + "r.idtrabajador, "
                 + "(SELECT nombre FROM persona WHERE idpersona = r.idtrabajador) AS trabajadorn, "
                 + "(SELECT apaterno FROM persona WHERE idpersona = r.idtrabajador) AS trabajadorap, "
-                + "r.tipo_reserva, r.fecha_reserva, r.fecha_ingresa, r.fecha_salida, r.costo_alojamiento, r.estado, "
-                + "FROM reserva r INNER JOIN habitacion h ON ridhabitacion = idhabitacion "
+                + "r.tipo_reserva, r.fecha_reserva, r.fecha_ingresa, r.fecha_salida, r.costo_alojamiento, r.estado "
+                + "FROM reserva r INNER JOIN habitacion h ON r.idhabitacion = h.idhabitacion "
                 + "WHERE r.fecha_reserva like '%" + buscar + "%' ORDER BY idreserva DESC";
         
         try {
