@@ -60,6 +60,11 @@ public class frmusuariologin extends javax.swing.JFrame {
                 txtpasswordActionPerformed(evt);
             }
         });
+        txtpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtpasswordKeyPressed(evt);
+            }
+        });
 
         btningresar.setBackground(new java.awt.Color(0, 0, 51));
         btningresar.setForeground(new java.awt.Color(255, 255, 255));
@@ -162,40 +167,8 @@ public class frmusuariologin extends javax.swing.JFrame {
 
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
-        try {
-            DefaultTableModel modelo;
-            ftrabajador func = new ftrabajador();
-            vtrabajador dts = new vtrabajador();
-            
-            dts.setLogin(txtusuario.getText());
-            dts.setPassword(txtpassword.getText());
-            
-            modelo = func.login(dts.getLogin(), dts.getPassword());
-            tablalistado.setModel(modelo);
-            
-            if(func.totalregistros > 0){//User exists in "Trabajador" table
-                this.dispose();
-                frminicio form = new frminicio();
-                form.toFront();
-                form.setVisible(true);
-                frminicio.lblidpersona.setText(tablalistado.getValueAt(0, 0).toString());
-                frminicio.lblnombre.setText(tablalistado.getValueAt(0, 1).toString());
-                frminicio.lblapaterno.setText(tablalistado.getValueAt(0, 2).toString());
-                frminicio.lblamaterno.setText(tablalistado.getValueAt(0, 3).toString());
-                frminicio.lblacceso.setText(tablalistado.getValueAt(0, 4).toString());
-                
-                if(!frminicio.lblacceso.getText().equals("Administrador")){
-                    frminicio.mnuarchivo.setEnabled(false);
-                    frminicio.mnuconfiguraciones.setEnabled(false);
-                }
-                
-            }
-            else{
-                JOptionPane.showMessageDialog(rootPane, "Acceso Denegado", " Acceso al Sistema", JOptionPane.ERROR_MESSAGE);
-            }
-            
-        } catch (Exception e) {
-        }
+        //validar usuario
+        validarUsuario();
     }//GEN-LAST:event_btningresarActionPerformed
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
@@ -205,6 +178,15 @@ public class frmusuariologin extends javax.swing.JFrame {
     private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtpasswordActionPerformed
+
+    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
+        // TODO add your handling code here:
+        
+        
+        if(evt.getKeyCode() == 10){
+            validarUsuario();
+        }
+    }//GEN-LAST:event_txtpasswordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -253,4 +235,41 @@ public class frmusuariologin extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtpassword;
     private javax.swing.JTextField txtusuario;
     // End of variables declaration//GEN-END:variables
+
+    private void validarUsuario() {
+        try {
+            DefaultTableModel modelo;
+            ftrabajador func = new ftrabajador();
+            vtrabajador dts = new vtrabajador();
+            
+            dts.setLogin(txtusuario.getText());
+            dts.setPassword(txtpassword.getText());
+            
+            modelo = func.login(dts.getLogin(), dts.getPassword());
+            tablalistado.setModel(modelo);
+            
+            if(func.totalregistros > 0){//User exists in "Trabajador" table
+                this.dispose();
+                frminicio form = new frminicio();
+                form.toFront();
+                form.setVisible(true);
+                frminicio.lblidpersona.setText(tablalistado.getValueAt(0, 0).toString());
+                frminicio.lblnombre.setText(tablalistado.getValueAt(0, 1).toString());
+                frminicio.lblapaterno.setText(tablalistado.getValueAt(0, 2).toString());
+                frminicio.lblamaterno.setText(tablalistado.getValueAt(0, 3).toString());
+                frminicio.lblacceso.setText(tablalistado.getValueAt(0, 4).toString());
+                
+                if(!frminicio.lblacceso.getText().equals("Administrador")){
+                    frminicio.mnuarchivo.setEnabled(false);
+                    frminicio.mnuconfiguraciones.setEnabled(false);
+                }
+                
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Acceso Denegado", " Acceso al Sistema", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+        }
+    }
 }

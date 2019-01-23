@@ -18,8 +18,8 @@ import javax.swing.JOptionPane;
  */
 
 public class conexion {
-    public String db = "basereserva";
-    public String url = "jdbc:mysql://localhost/" + db;
+    public String db = "dbreservahotelfava";
+    public String url = "jdbc:mysql://192.168.100.34/" + db;
     public String user = "root"; //para xampp
     public String pass = "";
 
@@ -35,7 +35,7 @@ public class conexion {
             link = DriverManager.getConnection(this.url, this.user, this.pass); //link to DB
             
         } catch (ClassNotFoundException | SQLException e) {
-            JOptionPane.showConfirmDialog(null, e);
+            JOptionPane.showConfirmDialog(null, e.getMessage());
         }
         
         return link;              
