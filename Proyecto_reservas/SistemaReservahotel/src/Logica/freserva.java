@@ -132,6 +132,27 @@ public class freserva {
             JOptionPane.showConfirmDialog(null, e);
             return false;
         }
+            
+    }
+    
+    public boolean pagar(vreserva dts){
+        sSQL = "UPDATE reserva set estado='Pagada'" +
+                " WHERE idreserva=?"; //will set my keys, only if id is correct
+        
+        try {
+            PreparedStatement pst = cn.prepareStatement(sSQL); //preparing the query
+            pst.setInt(1, dts.getIdreserva());//send one to one all values to my PreparedStatement
+
+            int n = pst.executeUpdate(); //save result of statement execute 
+            if (n!=0)
+                return true;
+            else
+                return false;
+
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+            return false;
+        }
         
     }
     

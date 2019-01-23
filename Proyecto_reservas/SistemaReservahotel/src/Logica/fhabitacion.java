@@ -117,6 +117,51 @@ public class fhabitacion {
         
     }
     
+    public boolean desocupar(vhabitacion dts){
+        sSQL = "UPDATE habitacion SET estado='Disponible'" +
+                "WHERE idhabitacion=?"; //will set my keys, only if id is correct
+        
+        try {
+            PreparedStatement pst = cn.prepareStatement(sSQL); //preparing the query
+            pst.setInt(1, dts.getIdhabitacion());//send one to one all values to my PreparedStatement
+            
+            
+            int n = pst.executeUpdate(); //save result of statement execute 
+            if (n!=0)
+                return true;
+            else
+                return false;
+
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+            return false;
+        }
+        
+    }
+    
+    public boolean ocupar(vhabitacion dts){
+        sSQL = "UPDATE habitacion SET estado='Ocupado'" +
+                "WHERE idhabitacion=?"; //will set my keys, only if id is correct
+        
+        try {
+            PreparedStatement pst = cn.prepareStatement(sSQL); //preparing the query
+            pst.setInt(1, dts.getIdhabitacion());//send one to one all values to my PreparedStatement
+            
+            
+            int n = pst.executeUpdate(); //save result of statement execute 
+            if (n!=0)
+                return true;
+            else
+                return false;
+
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, e);
+            return false;
+        }
+        
+    }
+    
+    
     public boolean eliminar(vhabitacion dts){
         sSQL = "delete from habitacion where idhabitacion =?";
         

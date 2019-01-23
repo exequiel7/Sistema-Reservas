@@ -124,10 +124,8 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="txtnumero" min="-2" pref="166" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="cbotipo_reserva" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="dcfecha_reserva" alignment="0" pref="130" max="32767" attributes="0"/>
-                                          </Group>
+                                          <Component id="cbotipo_reserva" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="dcfecha_reserva" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -482,6 +480,8 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="btnverconsumo" min="-2" pref="190" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                          <Component id="btnrealizarpago" min="-2" pref="190" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="lbltotalregistros" min="-2" pref="130" max="-2" attributes="0"/>
                       </Group>
@@ -507,6 +507,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbltotalregistros" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnverconsumo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnrealizarpago" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="76" max="32767" attributes="0"/>
               </Group>
@@ -613,6 +614,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnverconsumoActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnrealizarpago">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Realizar Pagos"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnrealizarpagoActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
