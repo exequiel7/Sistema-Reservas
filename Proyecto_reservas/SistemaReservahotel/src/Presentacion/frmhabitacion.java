@@ -6,27 +6,38 @@
 package Presentacion;
 
 import Datos.vhabitacion;
+import Logica.conexion;
 import Logica.fhabitacion;
+import java.io.File;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
  * @author deferrari.exequiel
  */
-public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't compatible with Desktop Pane, must extend from JInternalFrame
+public class frmhabitacion extends javax.swing.JInternalFrame { //Jframe doesn't compatible with Desktop Pane, must extend from JInternalFrame
 
     /**
      * Creates new form frmhabitacion
      */
+    private Connection connection = new conexion().conectar();
+    private String accion = "guardar";
+
     public frmhabitacion() {
         initComponents();
 
         mostrar(""); //show everything
         inhabilitar();
     }
-
-    private String accion = "guardar";
 
     void ocultar_columnas() {
         tablalistado.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -132,6 +143,7 @@ public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't 
         btneliminar = new javax.swing.JButton();
         btnsalir = new javax.swing.JButton();
         lbltotalregistros = new javax.swing.JLabel();
+        btnreporte = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -286,7 +298,7 @@ public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't 
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(txtnumero, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)))
+                        .addComponent(txtnumero, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -380,6 +392,16 @@ public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't 
 
         lbltotalregistros.setText("Registros");
 
+        btnreporte.setBackground(new java.awt.Color(102, 102, 102));
+        btnreporte.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnreporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/reporte.png"))); // NOI18N
+        btnreporte.setText("Reporte");
+        btnreporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnreporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -387,16 +409,18 @@ public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't 
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
-                        .addComponent(txtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addComponent(txtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnbuscar)
-                        .addGap(31, 31, 31)
+                        .addGap(18, 18, 18)
                         .addComponent(btneliminar)
-                        .addGap(29, 29, 29)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnreporte)
+                        .addGap(18, 18, 18)
                         .addComponent(btnsalir))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -412,12 +436,13 @@ public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't 
                     .addComponent(txtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnbuscar)
                     .addComponent(btneliminar)
-                    .addComponent(btnsalir))
+                    .addComponent(btnsalir)
+                    .addComponent(btnreporte))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbltotalregistros)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -601,6 +626,28 @@ public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't 
         // TODO add your handling code here:
     }//GEN-LAST:event_txtbuscarActionPerformed
 
+
+    private void btnreporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreporteActionPerformed
+        // TODO add your handling code here:
+        Map p = new HashMap();
+        JasperReport report;
+        JasperPrint print;
+
+        try {
+            System.out.println(new File("").getAbsolutePath() + "/src/Reportes/rpHabitaciones.jrxml");
+            //report = JasperCompileManager.compileReport(new File("").getAbsolutePath() + "/src/Reportes/rpHabitaciones.jrxml");
+            report = JasperCompileManager.compileReport("D:\\clone\\Sistema-Reservas\\Proyecto_reservas\\SistemaReservahotel\\src/Reportes/rpHabitaciones.jrxml");
+
+            print = JasperFillManager.fillReport(report, p, connection);
+            JasperViewer view = new JasperViewer(print, false);
+            view.setTitle("Reporte de Habitaciones");
+            view.setVisible(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();//Describe the error
+        }
+    }//GEN-LAST:event_btnreporteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -642,6 +689,7 @@ public class frmhabitacion extends javax.swing.JInternalFrame{ //Jframe doesn't 
     private javax.swing.JButton btneliminar;
     private javax.swing.JButton btnguardar;
     private javax.swing.JButton btnnuevo;
+    private javax.swing.JButton btnreporte;
     private javax.swing.JButton btnsalir;
     private javax.swing.JComboBox<String> cboestado;
     private javax.swing.JComboBox<String> cbopiso;

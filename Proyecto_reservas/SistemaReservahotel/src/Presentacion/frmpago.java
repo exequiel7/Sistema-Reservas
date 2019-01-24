@@ -8,15 +8,25 @@ package Presentacion;
 import Datos.vhabitacion;
 import Datos.vpago;
 import Datos.vreserva;
+import Logica.conexion;
 import Logica.fconsumo;
 import Logica.fhabitacion;
 import Logica.fpago;
 import Logica.fproducto;
 import Logica.freserva;
+import java.io.File;
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -27,14 +37,14 @@ public class frmpago extends javax.swing.JInternalFrame {
     /**
      * Creates new form frmpago
      */
-    
     private String accion = "guardar";
     public static String idreserva;
     public static String cliente;
     public static String idhabitacion;
     public static String habitacion;
     public static Double totalreserva;
-    
+    private Connection connection = new conexion().conectar();
+
     public frmpago() {
         initComponents();
         mostrar(idreserva);
@@ -50,7 +60,6 @@ public class frmpago extends javax.swing.JInternalFrame {
         txttotal_pago.setText(Double.toString(totalreserva + func.totalConsumo));
     }
 
-   
     void ocultar_columnas() { //hide primary keys
         //hide IdPago
         tablalistado.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -194,13 +203,14 @@ public class frmpago extends javax.swing.JInternalFrame {
         btneliminar = new javax.swing.JButton();
         btnsalir = new javax.swing.JButton();
         lbltotalregistros = new javax.swing.JLabel();
+        btnimprimircomprobante = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablalistadoconsumo = new javax.swing.JTable();
         lbltotalconsumo = new javax.swing.JLabel();
         lbltotalregistrosconsumo = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro de Pagos"));
@@ -466,6 +476,16 @@ public class frmpago extends javax.swing.JInternalFrame {
 
         lbltotalregistros.setText("Registros");
 
+        btnimprimircomprobante.setBackground(new java.awt.Color(102, 102, 102));
+        btnimprimircomprobante.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnimprimircomprobante.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/print.png"))); // NOI18N
+        btnimprimircomprobante.setText("Imprimir");
+        btnimprimircomprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnimprimircomprobanteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -476,12 +496,13 @@ public class frmpago extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbltotalregistros, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(btneliminar)
-                                .addGap(29, 29, 29)
-                                .addComponent(btnsalir)))))
+                        .addComponent(lbltotalregistros, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnimprimircomprobante)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btneliminar)
+                        .addGap(29, 29, 29)
+                        .addComponent(btnsalir)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -489,7 +510,8 @@ public class frmpago extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btneliminar)
-                    .addComponent(btnsalir))
+                    .addComponent(btnsalir)
+                    .addComponent(btnimprimircomprobante))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -687,7 +709,7 @@ public class frmpago extends javax.swing.JInternalFrame {
                 vreserva dts3 = new vreserva();
 
                 dts3.setIdreserva(Integer.parseInt(txtidreserva.getText()));
-                func3.pagar(dts3); 
+                func3.pagar(dts3);
             }
         } else if (accion.equals("editar")) {
             dts.setIdpago(Integer.parseInt(txtidpago.getText()));
@@ -775,6 +797,29 @@ public class frmpago extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tablalistadoconsumoMouseClicked
 
+    private void btnimprimircomprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnimprimircomprobanteActionPerformed
+        // TODO add your handling code here:
+        if (!txtidpago.getText().equals("")) {
+            Map p = new HashMap();
+            p.put("idpago", txtidpago.getText());//our parameter
+            JasperReport report;
+            JasperPrint print;
+
+            try {
+                //report = JasperCompileManager.compileReport(new File("").getAbsolutePath() + "/src/Reportes/rpHabitaciones.jrxml");
+                report = JasperCompileManager.compileReport("D:\\clone\\Sistema-Reservas\\Proyecto_reservas\\SistemaReservahotel\\src/Reportes/rptComprobante.jrxml");
+
+                print = JasperFillManager.fillReport(report, p, connection);
+                JasperViewer view = new JasperViewer(print, false);
+                view.setTitle("Reporte de Habitaciones");
+                view.setVisible(true);
+
+            } catch (Exception e) {
+                e.printStackTrace();//Describe the error
+            }
+        }
+    }//GEN-LAST:event_btnimprimircomprobanteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -814,6 +859,7 @@ public class frmpago extends javax.swing.JInternalFrame {
     private javax.swing.JButton btncancelar;
     private javax.swing.JButton btneliminar;
     private javax.swing.JButton btnguardar;
+    private javax.swing.JButton btnimprimircomprobante;
     private javax.swing.JButton btnnuevo;
     private javax.swing.JButton btnsalir;
     private javax.swing.JComboBox<String> cbotipo_comprobante;
