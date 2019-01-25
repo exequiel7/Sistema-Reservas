@@ -680,7 +680,8 @@ public class frmreserva extends javax.swing.JInternalFrame {
                 //occupy the rented room
                 fhabitacion func3 = new fhabitacion();
                 vhabitacion dts3 = new vhabitacion();
-                dts3.setIdhabitacion(Integer.parseInt(txtidhabitacion.getText()));
+                
+                dts3.setIdhabitacion(dts.getIdhabitacion());
                 func3.ocupar(dts3);
 
             }

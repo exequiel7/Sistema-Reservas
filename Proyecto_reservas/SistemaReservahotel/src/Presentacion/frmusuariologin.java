@@ -8,6 +8,7 @@ package Presentacion;
 import Datos.vtrabajador;
 import javax.swing.table.DefaultTableModel;
 import Logica.ftrabajador;
+import groovy.json.StringEscapeUtils;
 import javax.swing.JOptionPane;
 
 /**
@@ -173,6 +174,7 @@ public class frmusuariologin extends javax.swing.JFrame {
 
     private void btnsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalirActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnsalirActionPerformed
 
     private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
@@ -236,6 +238,8 @@ public class frmusuariologin extends javax.swing.JFrame {
     private javax.swing.JTextField txtusuario;
     // End of variables declaration//GEN-END:variables
 
+    
+    
     private void validarUsuario() {
         try {
             DefaultTableModel modelo;

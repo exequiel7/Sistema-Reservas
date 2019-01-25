@@ -5,6 +5,8 @@
  */
 package Logica;
 
+import java.lang.Object;
+import org.apache.commons.lang.StringEscapeUtils;
 import Datos.vtrabajador;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -196,7 +198,7 @@ public class ftrabajador {
         }
 
     }
-    
+
     public DefaultTableModel login(String login, String password) {
         DefaultTableModel modelo;
         String[] titulos = {"ID", "Nombre", "Apaterno", "Amaterno", "Acceso", "Login", "Clave", "Estado"};
@@ -205,20 +207,31 @@ public class ftrabajador {
         totalregistros = 0;
         modelo = new DefaultTableModel(null, titulos);
 
+        login = StringEscapeUtils.escapeSql(login);
+        password = StringEscapeUtils.escapeSql(password);
+        
         sSQL = "SELECT p.idpersona, p.nombre, p.apaterno, p.amaterno, t.acceso, t.login, t.password, t.estado "
                 + "FROM persona p INNER JOIN Trabajador t ON p.idpersona = t.idpersona "
-                + "WHERE t.login='" + login + "' and t.password='" + password + "' and t.estado='A'";
+                //+ "WHERE t.login=? AND t.password=? AND t.estado='A'";
 
+        + "WHERE t.login='" + login + "' and t.password='" + password + "' and t.estado='A'";
         try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sSQL);
-
+            //Uses parameterized queries
+            PreparedStatement st = cn.prepareStatement(sSQL);
+            st.setString(1, login);
+            st.setString(2, password);
+            ResultSet rs = st.executeQuery();
+            
+            
+            //Statement st = cn.createStatement();
+            //ResultSet rs = st.executeQuery(sSQL);
+            
             while (rs.next()) {
                 registro[0] = rs.getString("idpersona");
                 registro[1] = rs.getString("nombre");
                 registro[2] = rs.getString("apaterno");
                 registro[3] = rs.getString("amaterno");
-                
+
                 registro[4] = rs.getString("acceso");
                 registro[5] = rs.getString("login");
                 registro[6] = rs.getString("password");
